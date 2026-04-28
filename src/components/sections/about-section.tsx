@@ -1,9 +1,19 @@
 import { Sparkles } from "lucide-react";
 
 import { SectionHeading } from "@/components/section-heading";
-import { profile, strengths } from "@/lib/portfolio-data";
+import {
+  profile as fallbackProfile,
+  strengths as fallbackStrengths,
+  type ProfileData,
+} from "@/lib/portfolio-data";
 
-export function AboutSection() {
+export function AboutSection({
+  profile = fallbackProfile,
+  strengths = fallbackStrengths,
+}: {
+  profile?: ProfileData;
+  strengths?: string[];
+}) {
   return (
     <section id="about" className="container-shell pb-20 sm:pb-28">
       <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">

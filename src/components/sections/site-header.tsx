@@ -2,21 +2,35 @@ import Link from "next/link";
 import { Download } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { profile } from "@/lib/portfolio-data";
+import {
+  profile as fallbackProfile,
+  type ProfileData,
+} from "@/lib/portfolio-data";
 
-export function SiteHeader() {
+export function SiteHeader({
+  profile = fallbackProfile,
+}: {
+  profile?: ProfileData;
+}) {
+  const initials = profile.name
+    .split(" ")
+    .map((namePart) => namePart[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <header className="sticky top-0 z-30 border-b border-white/8 bg-[#090b14]/72 backdrop-blur-xl">
       <div className="container-shell flex items-center justify-between gap-4 py-4">
         <Link href="/" className="flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-2xl border border-primary/30 bg-primary/18 text-sm font-bold text-primary">
-            AR
+            {initials}
           </div>
           <div>
             <p className="font-heading text-sm font-semibold tracking-[0.22em] text-white uppercase">
-              Alvin Rikardo
+              {profile.name}
             </p>
-            <p className="text-xs text-white/50">Full-Stack Developer</p>
+            <p className="text-xs text-white/50">{profile.role}</p>
           </div>
         </Link>
 

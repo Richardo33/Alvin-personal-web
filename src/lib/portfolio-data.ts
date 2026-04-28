@@ -1,3 +1,39 @@
+export type ProfileData = {
+  name: string;
+  firstName: string;
+  role: string;
+  location: string;
+  available: boolean;
+  availability: string;
+  bio: string;
+  summary: string;
+  about: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  github: string;
+  linkedin: string;
+  instagram: string;
+  cv: string;
+  profileImage: string;
+};
+
+export type MetricItem = {
+  label: string;
+  value: string;
+};
+
+export type SkillItem = {
+  name: string;
+  image: string;
+  category?: string;
+};
+
+export type SkillGroup = {
+  title: string;
+  items: SkillItem[];
+};
+
 export type ProjectItem = {
   title: string;
   eyebrow: string;
@@ -16,6 +52,7 @@ export type ExperienceItem = {
   period: string;
   highlights: string[];
   stack: string[];
+  logo?: string;
 };
 
 export type CertificateItem = {
@@ -23,14 +60,30 @@ export type CertificateItem = {
   issuer: string;
   image: string;
   note: string;
+  certificateType?: string;
+  fileUrl?: string;
 };
 
-export const profile = {
+export type PortfolioContent = {
+  profile: ProfileData;
+  metrics: MetricItem[];
+  strengths: string[];
+  stackGroups: SkillGroup[];
+  stackItems: SkillItem[];
+  experiences: ExperienceItem[];
+  projects: ProjectItem[];
+  certificates: CertificateItem[];
+};
+
+export const profile: ProfileData = {
   name: "Alvin Rikardo",
   firstName: "Alvin",
   role: "Full-Stack Developer",
   location: "Bandung, Indonesia",
+  available: true,
   availability: "Available for freelance, contract, and remote product teams",
+  bio:
+    "A full-stack developer who enjoys taking ideas from interface concept to production-ready workflows with a focus on clarity, performance, and polished detail.",
   summary:
     "I design polished interfaces, build reliable backend flows, and turn product ideas into software that feels fast, thoughtful, and ready to grow.",
   about:
@@ -45,7 +98,7 @@ export const profile = {
   profileImage: "/portfolio/profile/alvin.jpeg",
 };
 
-export const metrics = [
+export const metrics: MetricItem[] = [
   { label: "Years building in teams", value: "2.5+" },
   { label: "Flagship portfolio projects", value: "7" },
   { label: "Certificates highlighted", value: "6" },
@@ -57,7 +110,7 @@ export const strengths = [
   "Product-minded collaboration shaped by Agile delivery experience",
 ];
 
-export const stackGroups = [
+export const stackGroups: SkillGroup[] = [
   {
     title: "Frontend",
     items: [
@@ -247,3 +300,14 @@ export const certificates: CertificateItem[] = [
     note: "A milestone from an intensive practical training environment.",
   },
 ];
+
+export const portfolioData: PortfolioContent = {
+  profile,
+  metrics,
+  strengths,
+  stackGroups,
+  stackItems,
+  experiences,
+  projects,
+  certificates,
+};

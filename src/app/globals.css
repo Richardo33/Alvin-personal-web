@@ -170,6 +170,8 @@
     position: relative;
   }
 
+
+
   .grain-overlay::before {
     content: "";
     position: absolute;
@@ -182,4 +184,12 @@
     background-size: 72px 72px;
     mask-image: radial-gradient(circle at center, black 35%, transparent 80%);
   }
+
+  .tech-stack-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+.tech-stack-swiper .swiper-slide {
+  height: auto;
+}
 }

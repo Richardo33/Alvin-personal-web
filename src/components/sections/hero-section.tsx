@@ -2,27 +2,49 @@ import Image from "next/image";
 import { MapPin, MessageCircle, MoveRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { metrics, profile } from "@/lib/portfolio-data";
+import {
+  metrics as fallbackMetrics,
+  profile as fallbackProfile,
+  type MetricItem,
+  type ProfileData,
+} from "@/lib/portfolio-data";
 
-export function HeroSection() {
+export function HeroSection({
+  metrics = fallbackMetrics,
+  profile = fallbackProfile,
+}: {
+  metrics?: MetricItem[];
+  profile?: ProfileData;
+}) {
   return (
     <section className="container-shell grain-overlay pt-6 pb-20 sm:pt-4 sm:pb-28">
       <div className="grid min-h-[calc(100svh-5rem)] items-center gap-8 lg:grid-cols-[1.12fr_0.88fr] lg:gap-12">
         <div className="space-y-6">
           <div className="space-y-2">
             <h1 className="max-w-4xl text-5xl leading-none font-semibold tracking-tight text-white sm:text-4xl xl:text-5xl">
-              Building modern products with sharp UI and dependable systems.
+              {profile.role} building modern products with sharp UI and
+              dependable systems.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-white/68 sm:text-[1.08rem]">
-              I&apos;m {profile.name}, a full-stack developer who enjoys taking
-              ideas from interface concept to production-ready workflows with a
-              focus on clarity, performance, and polished detail.
+              {profile.bio}
             </p>
           </div>
 
           <div className="flex flex-col items-start gap-3 text-sm text-white/60">
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/22 bg-emerald-400/10 px-4 py-2 text-emerald-200">
-              <span className="size-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,0.8)]" />
+            <span
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 ${
+                profile.available
+                  ? "border-emerald-400/22 bg-emerald-400/10 text-emerald-200"
+                  : "border-white/12 bg-white/6 text-white/58"
+              }`}
+            >
+              <span
+                className={`size-2 rounded-full ${
+                  profile.available
+                    ? "bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,0.8)]"
+                    : "bg-white/40"
+                }`}
+              />
               {profile.availability}
             </span>
 
@@ -82,9 +104,9 @@ export function HeroSection() {
                   width={960}
                   height={1200}
                   priority
-                  className="h-[27rem] w-full object-fill object-top"
+                  className="h-108 w-full object-fill object-top"
                 />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#081019] via-[#081019]/70 to-transparent p-6">
+                <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-[#081019] via-[#081019]/70 to-transparent p-6">
                   <h2 className="mt-2 text-2xl font-semibold text-white">
                     {profile.name}
                   </h2>

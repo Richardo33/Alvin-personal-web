@@ -1,9 +1,16 @@
 import Image from "next/image";
 
 import { SectionHeading } from "@/components/section-heading";
-import { experiences } from "@/lib/portfolio-data";
+import {
+  experiences as fallbackExperiences,
+  type ExperienceItem,
+} from "@/lib/portfolio-data";
 
-export function ExperienceSection() {
+export function ExperienceSection({
+  experiences = fallbackExperiences,
+}: {
+  experiences?: ExperienceItem[];
+}) {
   return (
     <section id="experience" className="container-shell pb-20 sm:pb-28">
       <SectionHeading
@@ -24,7 +31,7 @@ export function ExperienceSection() {
                   <div className="flex items-center gap-4">
                     <div className="rounded-[24px] border border-white/10 bg-white/8 p-3">
                       <Image
-                        src="/portfolio/brand/aia.png"
+                        src={item.logo ?? "/portfolio/brand/aia.png"}
                         alt={item.company}
                         width={64}
                         height={40}
@@ -43,7 +50,7 @@ export function ExperienceSection() {
                   </div>
 
                   <p className="text-sm leading-7 text-white/62">
-                    {item.company} • {item.location}
+                    {item.company} - {item.location}
                   </p>
                 </div>
 

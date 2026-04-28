@@ -1,8 +1,15 @@
 import { ArrowUpRight, Mail, MessageCircle } from "lucide-react";
 
-import { profile } from "@/lib/portfolio-data";
+import {
+  profile as fallbackProfile,
+  type ProfileData,
+} from "@/lib/portfolio-data";
 
-export function ContactSection() {
+export function ContactSection({
+  profile = fallbackProfile,
+}: {
+  profile?: ProfileData;
+}) {
   return (
     <section id="contact" className="container-shell pb-16 sm:pb-20">
       <div className="glass-panel overflow-hidden p-7 sm:p-10">

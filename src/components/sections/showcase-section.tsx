@@ -1,8 +1,19 @@
 import { PortfolioShowcase } from "@/components/portfolio-showcase";
 import { SectionHeading } from "@/components/section-heading";
-import { certificates, projects } from "@/lib/portfolio-data";
+import {
+  certificates as fallbackCertificates,
+  projects as fallbackProjects,
+  type CertificateItem,
+  type ProjectItem,
+} from "@/lib/portfolio-data";
 
-export function ShowcaseSection() {
+export function ShowcaseSection({
+  certificates = fallbackCertificates,
+  projects = fallbackProjects,
+}: {
+  certificates?: CertificateItem[];
+  projects?: ProjectItem[];
+}) {
   return (
     <section id="projects" className="container-shell pb-20 sm:pb-28">
       <SectionHeading

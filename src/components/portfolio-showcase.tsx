@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { ArrowUpRight, BriefcaseBusiness } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, FileText } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type { CertificateItem, ProjectItem } from "@/lib/portfolio-data";
@@ -152,6 +152,22 @@ export function PortfolioShowcase({
                 <p className="text-sm leading-7 text-white/66">
                   {(item as CertificateItem).note}
                 </p>
+                {(item as CertificateItem).fileUrl ? (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="rounded-full border-white/10 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                  >
+                    <a
+                      href={(item as CertificateItem).fileUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View Certificate
+                      <FileText className="size-4" />
+                    </a>
+                  </Button>
+                ) : null}
               </div>
             </article>
           )
