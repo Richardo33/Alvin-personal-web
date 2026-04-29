@@ -23,33 +23,33 @@ export function ExperienceSection({
         {experiences.map((item) => (
           <article
             key={`${item.role}-${item.period}`}
-            className="glass-panel p-7 sm:p-8"
+            className="glass-panel overflow-hidden p-5 sm:p-8 lg:h-96"
           >
-            <div className="grid gap-8 lg:grid-cols-[0.74fr_1.26fr]">
-              <div className="flex h-full flex-col">
-                <div className="space-y-5">
+            <div className="grid h-full min-h-0 gap-8 lg:grid-cols-[minmax(0,0.58fr)_minmax(0,0.79fr)]">
+              <div className="flex h-full min-h-0 min-w-0 flex-col">
+                <div className="min-h-0 space-y-5">
                   <div className="flex items-center gap-4">
-                    <div className="rounded-[24px] border border-white/10 bg-white/8 p-3">
+                    <div className="flex size-20 shrink-0 items-center justify-center rounded-[24px] border border-white/10 bg-white/8 p-3">
                       <Image
                         src={item.logo ?? "/portfolio/brand/aia.png"}
                         alt={item.company}
                         width={64}
                         height={40}
-                        className="h-10 w-auto object-contain"
+                        className="max-h-12 w-auto object-contain"
                       />
                     </div>
 
-                    <div>
-                      <p className="text-xs tracking-[0.26em] text-primary uppercase">
+                    <div className="min-w-0">
+                      <p className="truncate text-xs tracking-[0.26em] text-primary uppercase">
                         {item.period}
                       </p>
-                      <h3 className="mt-1 text-2xl font-semibold text-white">
+                      <h3 className="mt-1 line-clamp-2 text-2xl leading-tight font-semibold text-white">
                         {item.role}
                       </h3>
                     </div>
                   </div>
 
-                  <p className="text-sm leading-7 text-white/62">
+                  <p className="line-clamp-2 text-sm leading-7 text-white/62">
                     {item.company} - {item.location}
                   </p>
                 </div>
@@ -58,7 +58,7 @@ export function ExperienceSection({
                   {item.stack.map((stack) => (
                     <span
                       key={stack}
-                      className="shrink-0 rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs font-medium tracking-[0.18em] text-white/65 uppercase"
+                      className="max-w-48 shrink-0 overflow-hidden rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs font-medium tracking-[0.18em] text-ellipsis whitespace-nowrap text-white/65 uppercase"
                     >
                       {stack}
                     </span>
@@ -66,11 +66,11 @@ export function ExperienceSection({
                 </div>
               </div>
 
-              <div className="rounded-[26px] border border-white/8 bg-black/12 p-6">
-                <p className="text-xs tracking-[0.22em] text-primary uppercase">
+              <div className="flex h-full min-h-0 min-w-0 flex-col rounded-[26px] border border-white/8 bg-black/12 p-6">
+                <p className="shrink-0 text-xs tracking-[0.22em] text-primary uppercase">
                   Key responsibilities
                 </p>
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-4 min-h-0 space-y-3 overflow-y-auto pr-2">
                   {item.highlights.map((highlight) => (
                     <li
                       key={highlight}

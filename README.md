@@ -32,6 +32,7 @@ Create a `.env.local` file from `.env.example`, then fill in:
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2026-04-28
+SANITY_API_READ_TOKEN=your_read_token_if_dataset_is_private
 SANITY_API_WRITE_TOKEN=your_write_token_for_seed_script
 ```
 
@@ -56,6 +57,17 @@ http://localhost:3000/studio
 ```
 
 If Sanity shows "Connect this studio to your project" on localhost, choose "Add development host" for the exact current URL. Use "Register studio" only for a deployed or production Studio URL.
+
+For deployment, add these environment variables in the hosting dashboard, not only in `.env.local`:
+
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2026-04-28
+SANITY_API_READ_TOKEN=your_read_token_if_dataset_is_private
+```
+
+Then redeploy the app. Add every production origin to Sanity CORS exactly as used in the browser, for example both `https://richardoo.life` and `https://www.richardoo.life` if both domains are active. `SANITY_API_READ_TOKEN` is needed if the dataset is private. `SANITY_API_WRITE_TOKEN` is only needed locally for `npm run sanity:seed`.
 
 Without these environment variables, the portfolio keeps using the local fallback data in `src/lib/portfolio-data.ts`.
 

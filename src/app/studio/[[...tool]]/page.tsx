@@ -45,7 +45,9 @@ export default function StudioPage() {
           </h1>
           <p style={{ margin: "16px 0 0", color: "#4b5563", lineHeight: 1.7 }}>
             Studio belum bisa dibuka karena environment variable Sanity belum
-            diisi. Buat file <code>.env.local</code>, lalu isi seperti ini:
+            terbaca. Kalau lokal, buat file <code>.env.local</code>. Kalau
+            sudah deploy, isi environment variables di dashboard hosting
+            seperti Vercel lalu redeploy:
           </p>
           <pre
             style={{
@@ -68,6 +70,12 @@ SANITY_API_WRITE_TOKEN=your_write_token_for_seed_script`}</pre>
             <code>http://localhost:3000</code> atau{" "}
             <code>http://localhost:3001</code>, ke CORS origins di Sanity
             project settings dengan credentials enabled.
+          </p>
+          <p style={{ margin: "16px 0 0", color: "#4b5563", lineHeight: 1.7 }}>
+            Untuk domain production, tambahkan origin yang persis sama dengan
+            domain di browser. Contoh: <code>https://richardoo.life</code> dan{" "}
+            <code>https://www.richardoo.life</code> dihitung sebagai dua origin
+            berbeda.
           </p>
           <p style={{ margin: "16px 0 0", color: "#4b5563", lineHeight: 1.7 }}>
             Kalau ingin langsung mengisi data awal portfolio ke CMS, jalankan{" "}

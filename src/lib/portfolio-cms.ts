@@ -1,3 +1,5 @@
+import "server-only";
+
 import { client } from "@/sanity/lib/client";
 import { portfolioQuery } from "@/sanity/lib/queries";
 import { isSanityConfigured } from "@/sanity/env";
@@ -187,7 +189,7 @@ export async function getPortfolioContent(): Promise<PortfolioContent> {
     const data = await client.fetch<RawPortfolioContent>(
       portfolioQuery,
       {},
-      { next: { revalidate: 60 } }
+      { cache: "no-store", perspective: "published" }
     );
 
     const { profile, strengths } = normalizeProfile(data.profile);

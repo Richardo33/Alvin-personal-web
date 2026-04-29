@@ -7,6 +7,8 @@ import { SiteHeader } from "@/components/sections/site-header";
 import { TechStackSection } from "@/components/sections/tech-stack-section";
 import { getPortfolioContent } from "@/lib/portfolio-cms";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const portfolio = await getPortfolioContent();
 
