@@ -41,7 +41,7 @@ Steps:
 2. Create or use the `production` dataset.
 3. Copy the Project ID into `.env.local`.
 4. In Project Settings > API > Tokens, create a token with Editor permission and copy it into `SANITY_API_WRITE_TOKEN`.
-5. In Project Settings > API > CORS Origins, add `http://localhost:3000` and allow credentials.
+5. In Project Settings > API > CORS Origins, add the exact localhost origin used by the dev server, for example `http://localhost:3000` or `http://localhost:3001`, and allow credentials.
 6. Restart the dev server.
 7. Seed the CMS content:
 
@@ -54,6 +54,8 @@ Then open the embedded Studio:
 ```bash
 http://localhost:3000/studio
 ```
+
+If Sanity shows "Connect this studio to your project" on localhost, choose "Add development host" for the exact current URL. Use "Register studio" only for a deployed or production Studio URL.
 
 Without these environment variables, the portfolio keeps using the local fallback data in `src/lib/portfolio-data.ts`.
 

@@ -64,8 +64,10 @@ SANITY_API_WRITE_TOKEN=your_write_token_for_seed_script`}</pre>
           <p style={{ margin: 0, color: "#4b5563", lineHeight: 1.7 }}>
             Setelah itu restart dev server dan buka lagi{" "}
             <code>http://localhost:3000/studio</code>. Jangan lupa tambahkan{" "}
-            <code>http://localhost:3000</code> ke CORS origins di Sanity project
-            settings dengan credentials enabled.
+            localhost port yang sedang dipakai, misalnya{" "}
+            <code>http://localhost:3000</code> atau{" "}
+            <code>http://localhost:3001</code>, ke CORS origins di Sanity
+            project settings dengan credentials enabled.
           </p>
           <p style={{ margin: "16px 0 0", color: "#4b5563", lineHeight: 1.7 }}>
             Kalau ingin langsung mengisi data awal portfolio ke CMS, jalankan{" "}
