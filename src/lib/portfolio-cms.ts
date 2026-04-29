@@ -7,6 +7,7 @@ import {
   portfolioData,
   type CertificateItem,
   type ExperienceItem,
+  type MetricItem,
   type PortfolioContent,
   type ProfileData,
   type ProjectItem,
@@ -33,6 +34,44 @@ type RawPortfolioContent = {
 
 const fallbackSkillImages = new Map(
   portfolioData.stackItems.map((item) => [item.name.toLowerCase(), item.image])
+);
+
+const monthIndex = new Map<string, number>(
+  [
+    ["jan", 0],
+    ["january", 0],
+    ["januari", 0],
+    ["feb", 1],
+    ["february", 1],
+    ["februari", 1],
+    ["mar", 2],
+    ["march", 2],
+    ["maret", 2],
+    ["apr", 3],
+    ["april", 3],
+    ["may", 4],
+    ["mei", 4],
+    ["jun", 5],
+    ["june", 5],
+    ["juni", 5],
+    ["jul", 6],
+    ["july", 6],
+    ["juli", 6],
+    ["aug", 7],
+    ["august", 7],
+    ["agustus", 7],
+    ["sep", 8],
+    ["sept", 8],
+    ["september", 8],
+    ["oct", 9],
+    ["october", 9],
+    ["oktober", 9],
+    ["nov", 10],
+    ["november", 10],
+    ["dec", 11],
+    ["december", 11],
+    ["desember", 11],
+  ]
 );
 
 function textValue(value: unknown, fallback: string) {
@@ -180,9 +219,116 @@ function normalizeCertificates(raw?: Partial<CertificateItem>[] | null) {
   });
 }
 
+function parsePeriodPoint(
+  value: string,
+  boundary: "start" | "end",
+  today = new Date()
+) {
+  const normalized = value.trim().toLowerCase();
+
+  if (!normalized || /^(present|current|now|sekarang)$/i.test(normalized)) {
+    return today.getFullYear() * 12 + today.getMonth();
+  }
+
+  const match = normalized.match(
+    /^(?:(jan(?:uary|uari)?|feb(?:ruary|ruari)?|mar(?:ch|et)?|apr(?:il)?|may|mei|jun(?:e|i)?|jul(?:y|i)?|aug(?:ust|ustus)?|sep(?:t|tember)?|oct(?:ober)?|oktober|nov(?:ember)?|dec(?:ember)?|desember)\s+)?(\d{4})$/
+  );
+
+  if (!match) return null;
+
+  const year = Number(match[2]);
+  const month = match[1]
+    ? monthIndex.get(match[1])
+    : boundary === "start"
+      ? 0
+      : 11;
+
+  if (!Number.isFinite(year) || month === undefined) return null;
+
+  return year * 12 + month;
+}
+
+function countExperienceMonths(experiences: ExperienceItem[]) {
+  const workedMonths = new Set<number>();
+
+  experiences.forEach((experience) => {
+    const [rawStart, rawEnd] = experience.period
+      .split(/\s+[-–—]\s+/)
+      .map((part) => part.trim());
+
+    if (!rawStart) return;
+
+    const start = parsePeriodPoint(rawStart, "start");
+    const end = parsePeriodPoint(rawEnd || rawStart, "end");
+
+    if (start === null || end === null) return;
+
+    const firstMonth = Math.min(start, end);
+    const lastMonth = Math.max(start, end);
+
+    for (let month = firstMonth; month <= lastMonth; month += 1) {
+      workedMonths.add(month);
+    }
+  });
+
+  return workedMonths.size;
+}
+
+function formatExperienceYears(months: number) {
+  if (months <= 0) return "0";
+
+  const years = months / 12;
+
+  if (months % 12 === 0) {
+    return `${years}+`;
+  }
+
+  return `${Math.floor(years * 10) / 10}+`;
+}
+
+function buildMetrics({
+  experiences,
+  projects,
+  certificates,
+}: {
+  experiences: ExperienceItem[];
+  projects: ProjectItem[];
+  certificates: CertificateItem[];
+}): MetricItem[] {
+  return [
+    {
+      label: "Years building in teams",
+      value: formatExperienceYears(countExperienceMonths(experiences)),
+    },
+    {
+      label: "Flagship portfolio projects",
+      value: String(projects.length),
+    },
+    {
+      label: "Certificates highlighted",
+      value: String(certificates.length),
+    },
+  ];
+}
+
+function withDynamicMetrics(content: Omit<PortfolioContent, "metrics">) {
+  return {
+    ...content,
+    metrics: buildMetrics(content),
+  };
+}
+
 export async function getPortfolioContent(): Promise<PortfolioContent> {
   if (!isSanityConfigured) {
-    return portfolioData;
+    return withDynamicMetrics({
+      profile: portfolioData.profile,
+      strengths: portfolioData.strengths,
+      stackGroups: portfolioData.stackGroups,
+      stackItems: portfolioData.stackItems,
+      experiences: portfolioData.experiences,
+      projects: portfolioData.projects,
+      certificates: portfolioData.certificates,
+    });
   }
 
   try {
@@ -195,22 +341,32 @@ export async function getPortfolioContent(): Promise<PortfolioContent> {
     const { profile, strengths } = normalizeProfile(data.profile);
     const stackGroups = normalizeSkills(data.skills);
     const stackItems = stackGroups.flatMap((group) => group.items);
+    const projects = normalizeProjects(data.projects);
+    const experiences = normalizeExperiences(data.experiences);
+    const certificates = normalizeCertificates(data.certificates);
 
-    return {
+    return withDynamicMetrics({
       profile,
       strengths,
       stackGroups,
       stackItems,
-      metrics: portfolioData.metrics,
-      projects: normalizeProjects(data.projects),
-      experiences: normalizeExperiences(data.experiences),
-      certificates: normalizeCertificates(data.certificates),
-    };
+      projects,
+      experiences,
+      certificates,
+    });
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Sanity content fetch failed. Falling back to local data.", error);
     }
 
-    return portfolioData;
+    return withDynamicMetrics({
+      profile: portfolioData.profile,
+      strengths: portfolioData.strengths,
+      stackGroups: portfolioData.stackGroups,
+      stackItems: portfolioData.stackItems,
+      experiences: portfolioData.experiences,
+      projects: portfolioData.projects,
+      certificates: portfolioData.certificates,
+    });
   }
 }
